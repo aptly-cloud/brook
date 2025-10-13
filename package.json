@@ -1,0 +1,63 @@
+{
+	"name": "@aptly-sdk/brook",
+	"version": "0.0.27",
+	"description": "Realtime fault-tolerant realtime (pub/sub) SDK",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./react": {
+			"types": "./dist/react.d.ts",
+			"default": "./dist/react.js"
+		}
+	},
+	"types": "./dist/index.d.ts",
+	"type": "module",
+	"files": [
+		"dist/",
+		"README.md",
+		"LICENSE"
+	],
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "rollup -c"
+	},
+	"keywords": [
+		"realtime",
+		"pubsub",
+		"websocket",
+		"react",
+		"sdk"
+	],
+	"author": "Aptly",
+	"license": "MIT",
+	"peerDependencies": {
+		"react": ">=16.8.0",
+		"react-dom": ">=16.8.0"
+	},
+	"peerDependenciesMeta": {
+		"react": {
+			"optional": true
+		},
+		"react-dom": {
+			"optional": true
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/samtags/aptly-brook"
+	},
+	"homepage": "https://github.com/samtags/aptly-brook#readme",
+	"bugs": {
+		"url": "https://github.com/samtags/aptly-brook/issues"
+	},
+	"devDependencies": {
+		"@babel/preset-react": "^7.27.1",
+		"@rollup/plugin-babel": "^6.0.4",
+		"@rollup/plugin-commonjs": "^28.0.6",
+		"@rollup/plugin-node-resolve": "^16.0.1",
+		"rollup": "^4.52.3",
+		"rollup-plugin-copy": "^3.5.0"
+	}
+}

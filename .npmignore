@@ -1,0 +1,56 @@
+# Development files
+.git/
+.gitignore
+.eslintrc*
+.prettierrc*
+*.test.js
+*.test.jsx
+*.spec.js
+*.spec.jsx
+__tests__/
+tests/
+test/
+
+# Build and cache directories
+node_modules/
+.cache/
+dist/
+build/
+coverage/
+
+# Environment and config files
+.env*
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Documentation (exclude from package)
+docs/
+*.md
+!README.md
+
+# Other project files
+react-app/
+deno/
+jsr.json
+deploy.sh
+PLANNING.md
+TASK.md
+CLAUDE.mdw
+jsr.json
+.back
+.babelrc
+package-lock.json
+rollup.config.js
