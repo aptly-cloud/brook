@@ -22,7 +22,7 @@ class Package {
 
 		this.config = config;
 
-		this.config.endpoint = 'wss://connect.aptly.cloud';
+		this.config.endpoint = config.host || 'wss://connect.aptly.cloud';
 		this.config.verbose = config.verbose || false;
 
 		this.log = new Log(config);

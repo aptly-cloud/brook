@@ -8,14 +8,20 @@ export function usePublish(topic) {
 
 	useEffect(() => {
 		if (topic) {
+			ctx?.client?.log?.info('[usePublish]: subscribing to topic', topic);
 			channelRef.current = ctx.client.realtime.channel(topic);
 		}
 	}, [topic]);
 
+	useOnUpdate(() => {
+		ctx?.client?.log?.info('[usePublish]: ctx changed');
+		channelRef.current = ctx.client.realtime.channel(topic);
+	}, [ctx]);
+
 	function publish(message) {
 		if (!channelRef?.current) {
-			ctx?.log?.warn(
-				'Publish to a channel that is not yet properly initialized. Aborting action.'
+			ctx?.client?.log?.warn(
+				'[usePublish]: Publish to a channel that is not yet properly initialized. Aborting action.'
 			);
 			return;
 		}
@@ -24,4 +30,16 @@ export function usePublish(topic) {
 	}
 
 	return publish;
+}
+
+function useOnUpdate(callback, dependencies) {
+	const ref = useRef(false);
+
+	useEffect(() => {
+		if (ref.current == false) {
+			ref.current = true;
+		} else {
+			callback();
+		}
+	}, dependencies);
 }

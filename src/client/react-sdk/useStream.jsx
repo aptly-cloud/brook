@@ -14,28 +14,27 @@ export function useStream(topic, callback) {
 	const [streaming, setStreaming] = useState(false);
 
 	function subscribe() {
+		ctx?.client?.log?.info('Subscribing to topic:', topic);
 		if (topicRef.current !== topic) {
 			// unsubscribe from the previous topic
-			if (unsubscribeRef.current) {
-				unsubscribeRef.current();
-				unsubscribeRef.current = null;
-				setStreaming(false);
-			}
+			unsubscribe();
 		}
 
 		if (unsubscribeRef.current) {
-			ctx?.log?.info('Already subscribed to channel. Aborting action.');
+			ctx?.client?.log?.info('Already subscribed to channel. Aborting action.');
 			return;
 		}
 
 		if (!topic) {
-			ctx?.log?.warn('No topic to subscribe to.');
+			ctx?.client?.log?.warn('No topic to subscribe to.');
 			return;
 		}
 
 		const channel = ctx.client.realtime.channel(topic);
 
-		ctx?.log?.info(`Subscribing to channel: ${topic} from useStream hook`);
+		ctx?.client?.log?.info(
+			`Subscribing to channel: ${topic} from useStream hook`
+		);
 		const timer = new Timer();
 
 		unsubscribeRef.current = channel.stream((message, metadata) => {
@@ -48,10 +47,10 @@ export function useStream(topic, callback) {
 
 	function unsubscribe() {
 		if (unsubscribeRef.current) {
-			ctx?.log?.info('Unsubscribing.');
+			ctx?.client?.log?.info('Unsubscribing.');
 			unsubscribeRef.current();
 			unsubscribeRef.current = null;
-			ctx?.log?.info('Unsubscribed.');
+			ctx?.client?.log?.info('Unsubscribed.');
 			setStreaming(false);
 		}
 	}

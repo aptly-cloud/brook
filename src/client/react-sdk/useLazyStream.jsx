@@ -16,7 +16,7 @@ export function useLazyStream(topic) {
 
 	function subscribe() {
 		if (status !== 'connected') {
-			ctx?.log?.info('Not connected to the server. Aborting action.');
+			ctx?.client?.log?.info('Not connected to the server. Aborting action.');
 			return;
 		}
 
@@ -30,18 +30,20 @@ export function useLazyStream(topic) {
 		}
 
 		if (unsubscribeRef.current) {
-			ctx?.log?.info('Already subscribed to channel. Aborting action.');
+			ctx?.client?.log?.info('Already subscribed to channel. Aborting action.');
 			return;
 		}
 
 		if (!topic) {
-			ctx?.log?.warn('No topic to subscribe to.');
+			ctx?.client?.log?.warn('No topic to subscribe to.');
 			return;
 		}
 
 		const channel = ctx.client.realtime.channel(topic);
 
-		ctx?.log?.info(`Subscribing to channel: ${topic} from useStream hook`);
+		ctx?.client?.log?.info(
+			`Subscribing to channel: ${topic} from useStream hook`
+		);
 		const timer = new Timer();
 
 		unsubscribeRef.current = channel.stream((message, metadata) => {
@@ -54,10 +56,10 @@ export function useLazyStream(topic) {
 
 	function unsubscribe() {
 		if (unsubscribeRef.current) {
-			ctx?.log?.info('Unsubscribing.');
+			ctx?.client?.log?.info('Unsubscribing.');
 			unsubscribeRef.current();
 			unsubscribeRef.current = null;
-			ctx?.log?.info('Unsubscribed.');
+			ctx?.client?.log?.info('Unsubscribed.');
 			setStreaming(false);
 		}
 	}
