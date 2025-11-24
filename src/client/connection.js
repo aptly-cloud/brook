@@ -60,6 +60,7 @@ class Connection {
 		// Heartbeat management
 		this.heartbeatInterval = null;
 		this.lastPongTime = null;
+		this.lastPingTime = null;
 		this.heartbeatIntervalMs = 30000; // 30 seconds
 
 		// Authentication management
@@ -125,7 +126,7 @@ class Connection {
 					this.startAuthentication()
 						.then(() => {
 							this.setState(CONNECTION_STATES.CONNECTED);
-							this.startHeartbeat();
+							// this.startHeartbeat(); -- This is removed due to heartbeat is managed in server.
 							this.flushMessageQueue();
 							resolve(true);
 						})
@@ -313,7 +314,7 @@ class Connection {
 
 			// Handle heartbeat responses
 			if (message.type === 'heartbeat') {
-				this.lastPongTime = Date.now();
+				this.handleReceiveHeartbeat();
 				return;
 			}
 
@@ -386,6 +387,7 @@ class Connection {
 			case 'heartbeat':
 				// Allow heartbeat during auth
 				this.lastPongTime = Date.now();
+				this.handleReceiveHeartbeat();
 				break;
 
 			default:
@@ -618,6 +620,7 @@ class Connection {
 	/**
 	 * Starts heartbeat monitoring to detect connection health.
 	 *
+	 * @deprecated
 	 * @returns {void}
 	 * @private
 	 */
@@ -681,6 +684,18 @@ class Connection {
 			lastPongTime: this.lastPongTime,
 			backoffStatus: this.backoff.getStatus(),
 		};
+	}
+
+	handleReceiveHeartbeat() {
+		this.lastPingTime = Date.now();
+		this.ws.send(
+			JSON.stringify({
+				type: 'heartbeat',
+				payload: {
+					type: 'response',
+				},
+			})
+		);
 	}
 }
 
